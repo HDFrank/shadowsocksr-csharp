@@ -4,6 +4,7 @@ obj/
 pub/
 7zip*/
 temp/
+.vs/
 shadowsocks-csharp/shadowsocks-csharp.csproj.user
 TestResults
 *.suo
