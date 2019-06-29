@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Shadowsocks.Controller;
@@ -93,6 +94,10 @@ namespace Shadowsocks.View
                     new MenuItem("-"),
                     CreateMenuItem("Remove No Download", new EventHandler(this.RemoveNoDownloadServers_Click)),
                     CreateMenuItem("Remove Infinity Timeout", new EventHandler(this.RemoveInfinityTimeoutServers_Click)),
+<<<<<<< HEAD
+=======
+                    CreateMenuItem("Remove Duplicate Timeout", new EventHandler(this.RemoveDuplicateServers_Click)),
+>>>>>>> 808ced3a5d8ce5edba0ae9443d0d3ac2800c3736
                 }),
                 CreateMenuGroup("Port &out", new MenuItem[] {
                     CreateMenuItem("Copy current link", new EventHandler(this.copyLinkItem_Click)),
@@ -816,47 +821,57 @@ namespace Shadowsocks.View
 
         private void RemoveNoDownloadServers_Click(object sender, EventArgs e)
         {
-            List<Server> unusedServers = new List<Server>();
-            Configuration config = controller.GetCurrentConfiguration();
-            foreach (Server server in config.configs)
+            var removeSvrs = new List<Server>();
+            var config = controller.GetCurrentConfiguration();
+            foreach (var server in config.configs)
             {
                 if (server.ServerSpeedLog().Translate().totalDownloadBytes <= 0 &&
                     server.ServerSpeedLog().Translate().totalUploadBytes <= 0)
-                    unusedServers.Add(server);
+                    removeSvrs.Add(server);
             }
 
-            foreach (Server server in unusedServers)
+            foreach (var server in removeSvrs)
             {
                 config.configs.Remove(server);
             }
+
+            MessageBox.Show($"移除{removeSvrs.Count}个服务器");
         }
 
         private void RemoveInfinityTimeoutServers_Click(object sender, EventArgs e)
         {
-            List<Server> unusedServers = new List<Server>();
-            Configuration config = controller.GetCurrentConfiguration();
-            foreach (Server server in config.configs)
+            var removeSvrs = new List<Server>();
+            var config = controller.GetCurrentConfiguration();
+            foreach (var server in config.configs)
             {
                 if (server.ServerSpeedLog().Translate().avgConnectTime < 0)
-                    unusedServers.Add(server);
+                    removeSvrs.Add(server);
             }
 
-            foreach (Server server in unusedServers)
+            foreach (var server in removeSvrs)
             {
                 config.configs.Remove(server);
             }
+
+            MessageBox.Show($"移除{removeSvrs.Count}个服务器");
         }
 
         private void RemoveDuplicateServers_Click(object sender, EventArgs e)
         {
-            //Configuration config = controller.GetCurrentConfiguration();
-            //foreach (Server svr in config.configs)
-            //{
-            //    if(config.configs.(s => { return s.server == svr.server && s.server_port == svr.server_port && s.server_udp_port == svr.server_udp_port; }))
-            //    {
-            //        config.configs.Remove(svr);
-            //    }
-            //}
+            var distinctSvrs = new List<Server>();
+            var config = controller.GetCurrentConfiguration();
+            foreach (var svr in config.configs)
+            {
+                if (config.configs.Count(s => s.server == svr.server && s.server_port == svr.server_port) > 1)
+                {
+                    distinctSvrs.Add(svr);
+                }
+            }
+
+            var count = config.configs.Count - distinctSvrs.Count;
+            config.configs = distinctSvrs;
+
+            MessageBox.Show($"移除{count}个服务器");
         }
 
         private void ClearItem_Click(object sender, EventArgs e)

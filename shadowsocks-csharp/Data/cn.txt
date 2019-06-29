@@ -127,6 +127,7 @@ Clear &Selected Total=清空选中节点历史流量(&S)
 Clear &Total=清空所有历史流量(&T)
 Remove No Download=移除上传下载量为零的服务器
 Remove Infinity Timeout=移除延时无穷大的服务器
+Remove Duplicate Timeout=移除重复的服务器
 Port &out=导出(&O)
 Copy current link=复制选中链接
 Copy current group links=复制选中组链接
