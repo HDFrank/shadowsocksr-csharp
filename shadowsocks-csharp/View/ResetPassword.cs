@@ -24,7 +24,8 @@ namespace Shadowsocks.View
         {
             if (textPassword.Text == textPassword2.Text && Configuration.SetPasswordTry(textOld.Text, textPassword.Text))
             {
-                Configuration cfg = Configuration.Load();
+                //Configuration cfg = Configuration.Load();
+                Configuration cfg = Configuration.Instance;
                 Configuration.SetPassword(textPassword.Text);
                 Configuration.Save(cfg);
                 Close();

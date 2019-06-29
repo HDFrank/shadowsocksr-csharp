@@ -94,10 +94,7 @@ namespace Shadowsocks.View
                     new MenuItem("-"),
                     CreateMenuItem("Remove No Download", new EventHandler(this.RemoveNoDownloadServers_Click)),
                     CreateMenuItem("Remove Infinity Timeout", new EventHandler(this.RemoveInfinityTimeoutServers_Click)),
-<<<<<<< HEAD
-=======
                     CreateMenuItem("Remove Duplicate Timeout", new EventHandler(this.RemoveDuplicateServers_Click)),
->>>>>>> 808ced3a5d8ce5edba0ae9443d0d3ac2800c3736
                 }),
                 CreateMenuGroup("Port &out", new MenuItem[] {
                     CreateMenuItem("Copy current link", new EventHandler(this.copyLinkItem_Click)),

@@ -61,7 +61,8 @@ namespace Shadowsocks.Controller
 
         public ShadowsocksController()
         {
-            _config = Configuration.Load();
+            //_config = Configuration.Load();
+            _config = Configuration.Instance;
             _transfer = ServerTransferTotal.Load();
 
             foreach (Server server in _config.configs)
@@ -100,7 +101,8 @@ namespace Shadowsocks.Controller
         // always return copy
         public Configuration GetConfiguration()
         {
-            return Configuration.Load();
+            //return Configuration.Load();
+            return Configuration.Instance;
         }
 
         public Configuration GetCurrentConfiguration()
@@ -163,7 +165,8 @@ namespace Shadowsocks.Controller
 
         public Configuration MergeGetConfiguration(Configuration mergeConfig)
         {
-            Configuration ret = Configuration.Load();
+            //Configuration ret = Configuration.Load();
+            Configuration ret = Configuration.Instance;
             if (mergeConfig != null)
             {
                 MergeConfiguration(mergeConfig, ret.configs);

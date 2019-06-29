@@ -81,6 +81,8 @@ namespace Shadowsocks.Model
     [Serializable]
     public class Configuration
     {
+        static private Configuration _instance;
+
         public List<Server> configs;
         public int index;
         public bool random;
@@ -129,6 +131,18 @@ namespace Shadowsocks.Model
         private Dictionary<int, PortMapConfigCache> portMapCache = new Dictionary<int, PortMapConfigCache>();
 
         private static string CONFIG_FILE = "gui-config.json";
+
+        public static Configuration Instance
+        {
+            get
+            {
+                if(_instance == null)
+                {
+                    _instance = Load();
+                }
+                return _instance;
+            }
+        }
 
         public static void SetPassword(string password)
         {
@@ -374,7 +388,7 @@ namespace Shadowsocks.Model
             CheckServer(server.server);
         }
 
-        public Configuration()
+        private Configuration()
         {
             index = 0;
             localPort = 1080;
@@ -509,7 +523,7 @@ namespace Shadowsocks.Model
             }
         }
 
-        public static Configuration Load()
+        private static Configuration Load()
         {
             return LoadFile(CONFIG_FILE);
         }

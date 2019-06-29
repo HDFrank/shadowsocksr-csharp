@@ -61,7 +61,8 @@ namespace Shadowsocks
                 //#endif
 #if !_CONSOLE
                 int try_times = 0;
-                while (Configuration.Load() == null)
+                //while (Configuration.Load() == null)
+                while (Configuration.Instance == null)
                 {
                     if (try_times >= 5)
                         return;
