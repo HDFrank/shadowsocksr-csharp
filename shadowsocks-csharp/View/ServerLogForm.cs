@@ -90,6 +90,9 @@ namespace Shadowsocks.View
                     new MenuItem("-"),
                     CreateMenuItem("Clear &Selected Total", new EventHandler(this.ClearSelectedTotal_Click)),
                     CreateMenuItem("Clear &Total", new EventHandler(this.ClearTotal_Click)),
+                    new MenuItem("-"),
+                    CreateMenuItem("Remove No Download", new EventHandler(this.RemoveNoDownloadServers_Click)),
+                    CreateMenuItem("Remove Infinity Timeout", new EventHandler(this.RemoveInfinityTimeoutServers_Click)),
                 }),
                 CreateMenuGroup("Port &out", new MenuItem[] {
                     CreateMenuItem("Copy current link", new EventHandler(this.copyLinkItem_Click)),
@@ -809,6 +812,51 @@ namespace Shadowsocks.View
             {
                 controller.ClearTransferTotal(server.server);
             }
+        }
+
+        private void RemoveNoDownloadServers_Click(object sender, EventArgs e)
+        {
+            List<Server> unusedServers = new List<Server>();
+            Configuration config = controller.GetCurrentConfiguration();
+            foreach (Server server in config.configs)
+            {
+                if (server.ServerSpeedLog().Translate().totalDownloadBytes <= 0 &&
+                    server.ServerSpeedLog().Translate().totalUploadBytes <= 0)
+                    unusedServers.Add(server);
+            }
+
+            foreach (Server server in unusedServers)
+            {
+                config.configs.Remove(server);
+            }
+        }
+
+        private void RemoveInfinityTimeoutServers_Click(object sender, EventArgs e)
+        {
+            List<Server> unusedServers = new List<Server>();
+            Configuration config = controller.GetCurrentConfiguration();
+            foreach (Server server in config.configs)
+            {
+                if (server.ServerSpeedLog().Translate().avgConnectTime < 0)
+                    unusedServers.Add(server);
+            }
+
+            foreach (Server server in unusedServers)
+            {
+                config.configs.Remove(server);
+            }
+        }
+
+        private void RemoveDuplicateServers_Click(object sender, EventArgs e)
+        {
+            //Configuration config = controller.GetCurrentConfiguration();
+            //foreach (Server svr in config.configs)
+            //{
+            //    if(config.configs.(s => { return s.server == svr.server && s.server_port == svr.server_port && s.server_udp_port == svr.server_udp_port; }))
+            //    {
+            //        config.configs.Remove(svr);
+            //    }
+            //}
         }
 
         private void ClearItem_Click(object sender, EventArgs e)
